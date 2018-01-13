@@ -51,7 +51,7 @@ actuator(N_PId) ->
 end.
 
 pts(Control_Signal) ->
-    io:format("**** Acting **** ~n Using ~p to act on env~p", [Control_Signal]).
+    io:format("**** Acting **** ~n Using ~p to act on env~n", [Control_Signal]).
 
 cortex(Sensor_PId, Neuron_PId, Actuator_PId) ->
     receive
