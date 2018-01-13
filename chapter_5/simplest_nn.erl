@@ -26,7 +26,7 @@ end.
 dot([I|Input], [W|Weights], Acc) ->
     dot(Input, Weights,I*W+Acc);
 dot([], [], Acc) ->
-    Acc.
+    Acc;
 dot([], [Bias], Acc) ->
     Bias+Acc.
 
