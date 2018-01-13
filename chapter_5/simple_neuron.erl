@@ -11,7 +11,7 @@ loop(Weights) ->
         {From, Input} ->
             io:format("**** Processing **** ~n Input: ~p~n Using Weights: ~p ~n", [Input, Weights]),
             Dot_Product = dot(Input, Weights, 0),
-            Output = [math:tanh(Dot_Product)]),
+            Output = [math:tanh(Dot_Product)],
             From ! {result, Output},
             loop(Weights)
 end.
