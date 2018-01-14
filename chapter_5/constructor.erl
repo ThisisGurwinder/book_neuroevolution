@@ -61,3 +61,31 @@ create_NeuroLayer(Cx_Id, Input_IdPs, [Id | NIds], Output_Ids, Acc) ->
     create_NeuroLayer(Cx_Id, Input_IdPs, NIds, Output_Ids, [ Neuron | Acc]);
 create_NeuroLayer(_Cx_Id, _Input_IdPs, [], _Output_Ids, Acc) ->
     Acc.
+
+create_Neuron(Input_IdPs, Id, Cx_Id, Output_Ids) ->
+    Proper_InputIdPs = create_NeuralInput(Input_IdPs, []),
+    #neuron{ id = Id, cx_id = Cx_Id, af = tanh, input_idps = Input_IdPs, output_ids = Output_Ids}.
+create_NeuralInput([{ Input_Id, Input_VL} | Input_IdPs], Acc) ->
+    Weights = create_NeuralWeights(Input_VL, []),
+    create_NeuralInput(Input_IdPs, [{ Input_Id, Weights} | Acc]);
+create_NeuralInput([], Acc) ->
+    lists:reverse([{bias, rand:uniform()-0.5} | Acc]).
+
+create_NeuralWeights(0, Acc) ->
+    Acc;
+create_NeuralWeights(Index, Acc) ->
+    W = rand:uniform()-0.5,
+    create_NeuralWeights(Index-1, [W|Acc]).
+
+generate_ids(0, Acc) ->
+    Acc;
+generate_ids(Index, Acc) ->
+    Id = generate_id(),
+    generate_ids(Index-1, [Id|Acc]).
+
+generate_id() ->
+    {MegaSeconds, Seconds, MicroSeconds} = now(),
+    1/(MegaSeconds*1000000 + Seconds + MicroSeconds/1000000).
+
+create_Cortex(Cx_Id, S_Ids, A_Ids, NIds) ->
+    #cortex{ id = Cx_Id, sensor_ids = S_Ids, actuator_ids = A_Ids, nids = NIds}.
