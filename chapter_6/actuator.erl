@@ -14,7 +14,7 @@ end.
 loop(Id, Cx_PId, AName, {[From_PId | Fanin_PIds], MFanin_PIds}, Acc) ->
     receive
         {From_PId, forward, Input} ->
-            loop(Id, Cx_PId, AName, {Fanin_PIds, MFanin_PIds}, lists:append(Input, Acc));
+            loop(Id, Cx_PId, AName, {Fanin_PIds, MFanin_PIds}, lists:append(lists:flatten([Input]), Acc));
         {Cx_PId, terminate} ->
             ok
 end;
