@@ -25,12 +25,10 @@ map(FileName, Genotype) ->
             U_Genotype = update_genotype(IdsNPIds, Genotype, Neuron_IdsNWeights),
             {ok, File} = file:open(FileName, write),
             lists:foreach(fun(X) -> io:format(File, "~p.~n", [X]) end, U_Genotype),
-            file:close(File),
-            io:format("Finished updating to file ~p~n", [FileName])
+            file:close(File)
 end.
 
 spawn_CerebralUnits(IdsNPIds, CerebralUnitType, [Id|Ids]) ->
-    io:format("Type: ~p~n", [CerebralUnitType]),
     PId = CerebralUnitType:gen(self(), node()),
     ets:insert(IdsNPIds, {Id, PId}),
     ets:insert(IdsNPIds, {PId, Id}),

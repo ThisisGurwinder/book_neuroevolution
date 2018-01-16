@@ -14,6 +14,8 @@ end.
 loop(Id, Cx_PId, AF, {[{Input_PId, Weights} | Input_PIdPs], MInput_PIdPs}, Output_PIds, Acc) ->
     receive
         {Input_Pid, forward, Input} ->
+            io:format("Starting: Input ~p Self ~p ~n", [Input, self()]),
+            io:format("Starting: Input ~p Weights ~p Self ~p ~n", [lists:flatten([Input]), Weights, self()]),
             Result = dot(lists:flatten([Input]), Weights, 0),
             loop(Id, Cx_PId, AF, {Input_PIdPs, MInput_PIdPs}, Output_PIds, Result+Acc);
         {Cx_PId, get_backup} ->
@@ -32,8 +34,10 @@ loop(Id, Cx_PId, AF, {[], MInput_PIdPs}, Output_PIds, Acc) ->
     loop(Id, Cx_PId, AF, {MInput_PIdPs, MInput_PIdPs}, Output_PIds, 0).
 
 dot([I|Input], [W|Weights], Acc) ->
+    io:format("Input ~p Weights ~p Self ~p ~n", [Input, Weights, self()]),
     dot(Input, Weights, I*W+Acc);
 dot([], [], Acc) ->
+    io:format("Final ~p self:~p ~n", [Acc, self()]),
     Acc.
 
 tanh(Val) ->
